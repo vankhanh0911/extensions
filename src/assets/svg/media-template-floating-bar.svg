@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="94.001" height="74" viewBox="0 0 94.001 74">
+  <g id="Group_7240" data-name="Group 7240" transform="translate(0 0)">
+    <path id="Subtraction_21" data-name="Subtraction 21" d="M89,74H5a5.006,5.006,0,0,1-5-5V5A5.006,5.006,0,0,1,5,0H89a5.006,5.006,0,0,1,5,5V69A5.006,5.006,0,0,1,89,74ZM6,13V68H89V13H6ZM26,5a2,2,0,0,0-2,2V8a2,2,0,0,0,2,2H87a2,2,0,0,0,2-2V7a2,2,0,0,0-2-2ZM19,6a2,2,0,1,0,2,2A2,2,0,0,0,19,6ZM13,6a2,2,0,1,0,0,4h1a2,2,0,1,0,0-4ZM8,6a2,2,0,1,0,2,2A2,2,0,0,0,8,6Z" fill="#dddfe2"/>
+    <g id="Group_7221" data-name="Group 7221" transform="translate(18.002 21.998)">
+      <rect id="Rectangle_9590" data-name="Rectangle 9590" width="56" height="16" transform="translate(7 5)" fill="#e0e0e0"/>
+      <rect id="Rectangle_9586" data-name="Rectangle 9586" width="56" height="16" fill="#005fb8"/>
+      <rect id="Rectangle_9588" data-name="Rectangle 9588" width="32" height="6" transform="translate(5 5)" fill="#fff"/>
+      <rect id="Rectangle_9589" data-name="Rectangle 9589" width="10" height="6" transform="translate(41 5)" fill="#00adf1"/>
+    </g>
+  </g>
+</svg>
