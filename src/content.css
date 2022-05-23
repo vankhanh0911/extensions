@@ -1,0 +1,124 @@
+.at-active {
+    border: 2px solid #ed2b21 !important;
+    position: relative;
+}
+
+.custom-action-menu {
+    display: none;
+    position: relative;
+    background-color: #1e2431;
+    height: 31px;
+    border-radius: 4px;
+    color: #fff;
+    margin-top: 5px
+}
+
+.custom-action-menu .custom-action-menu-close-button {
+    width: 20px;
+    position: absolute;
+    right: -24px;
+    background-color: #1e2431;
+    border-radius: 3px;
+    height: 20px;
+    top: 0;
+    cursor: pointer
+}
+
+.custom-action-menu .custom-action-menu-close-button .icon-close {
+    margin: 2px auto;
+    width: 12px;
+    display: block;
+    fill: #fff
+}
+
+.custom-action-menu>div {
+    padding: 5px 7px;
+    font-weight: 600;
+    line-height: 19px;
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    cursor: pointer;
+    text-transform: capitalize
+}
+
+.custom-action-menu>div {
+    border-right: 1px solid #020407
+}
+
+.custom-action-menu>div:last-of-type {
+    border-right: 0 !important
+}
+
+.custom-action-menu>div:hover {
+    background-color: #020407;
+    border-radius: 4px
+}
+
+.custom-action-menu>div:hover>div {
+    border: none;
+    display: block
+}
+
+.custom-action-menu div.sub-menu {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 25px
+}
+
+.custom-action-menu div.sub-menu:before {
+    content: " ";
+    height: 10px;
+    background: 0 0;
+    width: 100%;
+    display: block
+}
+
+.custom-action-menu div.sub-menu>div {
+    padding: 5px;
+    background: #1e2431;
+    white-space: nowrap
+}
+
+.custom-action-menu div.sub-menu>div:first-of-type {
+    border-top-right-radius: 4px;
+    border-top-left-radius: 4px
+}
+
+.custom-action-menu div.sub-menu>div:last-of-type {
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px
+}
+
+.custom-action-menu .icon-html,
+.custom-action-menu .icon-delete,
+.custom-action-menu .icon-link,
+.custom-action-menu .icon-dot {
+    width: 25px;
+    margin-top: 4px;
+    height: 12px
+}
+
+.custom-action-menu-pointer {
+    width: 6px;
+    height: 6px;
+    border-left: 5px solid #1e2431;
+    border-top: 5px solid #1e2431;
+    position: absolute;
+    transform: translateX(-50%) rotateZ(45deg);
+    display: none
+}
+
+
+/* Iframe media template */
+.at-iframe-media-template {
+    position: fixed;
+    height: 100vh;
+    width: 95%;
+    top: 0%;
+    right: 100%;
+    display: none;
+    transition: all .25s ease-in-out;
+    z-index: 10001;
+}
