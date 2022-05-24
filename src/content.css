@@ -1,5 +1,6 @@
 .at-active {
-    border: 2px solid #ed2b21 !important;
+    box-shadow: #ed2b21 0px 0px 0px 2px;
+    z-index: 10000;
     position: relative;
 }
 

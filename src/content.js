@@ -2,81 +2,13 @@
 /* src/content.js */
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
+import cssPath from "cssman";
 import Gallery from "./components/Gallery";
 import "./content.css";
 
 function Main() {
-  const [isShow, setIsShow] = useState(false);
-
-  const elemToSelector = (elem, i = 1) => {
-    const { tagName, id, className, parentElement } = elem;
-
-    let str = "";
-
-    if (id !== "" && id.match(/^[a-z].*/)) {
-      str += `#${id}`;
-      return str;
-    }
-
-    str = tagName.toLowerCase();
-
-    if (className) {
-      str +=
-        "." +
-        className
-          .replace(/(^\s)/gm, "")
-          .replace(/(\s{2,})/gm, " ")
-          .split(/\s/)
-          .join(".");
-    }
-
-    const needNthPart = (el) => {
-      let sib = el.previousElementSibling;
-
-      if (!el.className) {
-        return true;
-      }
-
-      while (sib) {
-        if (el.className !== sib.className) {
-          return false;
-        }
-
-        sib = sib.previousElementSibling;
-      }
-
-      return false;
-    };
-
-    const getNthPart = (el) => {
-      let childIndex = 1;
-
-      let sib = el.previousElementSibling;
-      while (sib) {
-        childIndex++;
-        sib = sib.previousElementSibling;
-      }
-
-      return `:nth-child(${childIndex})`;
-    };
-
-    if (needNthPart(elem)) {
-      str += getNthPart(elem);
-    }
-
-    if (!parentElement) {
-      return str;
-    }
-
-    if (i === 1) {
-      i++;
-      return elemToSelector(parentElement, i);
-    }
-
-    i++;
-
-    return `${elemToSelector(parentElement, i)} > ${str}`;
-  };
+  // const [isShow, setIsShow] = useState(false);
+  const [selector, setSelector] = useState("");
 
   useEffect(() => {
     const events = [
@@ -101,7 +33,7 @@ function Main() {
       "mouseout",
     ];
 
-    const nodes = document.getElementById("root").getElementsByTagName("*");
+    const nodes = document.getElementById("root").getElementsByTagName("div");
 
     setTimeout(() => {
       for (let i = 0; i < nodes.length; i++) {
@@ -129,6 +61,16 @@ function Main() {
         nodes[i].addEventListener("click", (event) => {
           event.stopPropagation();
           event.preventDefault();
+
+          let selectorNode = cssPath(event.currentTarget);
+
+          if (selectorNode) {
+            selectorNode = selectorNode.replace(/\.at\-active/g, "");
+          }
+
+          console.log("selectorNode", selectorNode);
+
+          setSelector(selectorNode);
 
           const eventTarget = event.currentTarget;
 
@@ -169,8 +111,6 @@ function Main() {
         .querySelector("#open-iframe-media-template")
         .addEventListener("click", () => {
           node.style.display = "none";
-          setIsShow(true);
-          console.log("true");
         });
     }, 1000);
   }, []);
@@ -274,25 +214,9 @@ function Main() {
       </div>`;
   };
 
-  const handleOk = () => {
-    console.log("dmdmdmd");
-    setIsShow(false);
-  };
-
-  const handleCancel = () => {
-    console.log("dmdmdmd");
-    setIsShow(false);
-  };
-
   return (
     <>
-      <div className="at-gallery">
-        <Gallery
-          isModalVisible={isShow}
-          handleOk={handleOk}
-          handleCancel={handleCancel}
-        />
-      </div>
+      <Gallery selector={selector} />
     </>
   );
 }

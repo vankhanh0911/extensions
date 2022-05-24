@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Modal, Button, Typography, Tabs } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
+import "antd/dist/antd.css";
 
 // Styles
 // import "./style.css";
@@ -53,6 +54,14 @@ const Gallery = (props) => {
     viewPages: [],
   });
 
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
   useEffect(() => {
     const url = `https://sandbox-media-template.antsomi.com/cdp/api/v1/media-template-type/index?&_token=${token}&_user_id=${_user_id}&_account_id=${_account_id}&portalId=33167&languageCode=en`;
 
@@ -62,6 +71,17 @@ const Gallery = (props) => {
         setSelectedType(res.data.data[0].template_type_id);
       }
     });
+
+    const interval = setInterval(() => { 
+      const selector = document.querySelector("#open-iframe-media-template");
+      
+      if (selector) {
+        clearInterval(interval);
+        selector.addEventListener("click", () => {
+          setIsModalVisible(true);
+        });
+      }
+    }, 300);
   }, []);
 
   useEffect(() => {
@@ -170,6 +190,59 @@ const Gallery = (props) => {
     d.getElementsByTagName("head")[0].appendChild(s);
   };
 
+  const previewCampaign = (templateId, zoneSelector, zoneRenderType = 'replace', isGallery = false, isPreview = false, env = 'production') => {
+    var s = document.createElement('script');
+    s.type = 'text/javascript';
+    s.id = 'antsomi-cdp-optin';
+    s.src =
+      env === 'production'
+        ? '//st-media-template.antsomi.com/js/media.min.js'
+        : '//sandbox-template.ants.vn/khanhhv/media.min.js';
+    s.async = true;
+    s.dataset.antsomiTemplateId = templateId;
+    s.dataset.env = env;
+    s.dataset.zoneSelector = zoneSelector;
+    s.dataset.isPreview = String(isPreview);
+    s.dataset.isGallery = String(isGallery);
+    zoneRenderType && (s.dataset.zoneRenderType = zoneRenderType);
+    document.getElementsByTagName('head')[0].appendChild(s);
+  };
+
+  const onClickPreviewTemplate = () => {
+    setIsModalVisible(false);
+    previewCampaign(
+        '',
+      props.selector || '',
+        'replace',
+        false,
+        true,
+        'sandbox',
+    );
+    
+    const postMess = e => {
+        if (e?.data?.type === 'preview-antsomi-cdp-campaign-wating') {
+          setTimeout(() => {
+            window.postMessage(
+              {
+                ...selectedTemplate.template_setting,
+                views: selectedTemplate.viewPages,
+                messageType: 'preview-antsomi-cdp-campaign',
+                targetScript: e?.data?.id,
+              },
+              '*',
+            );
+          }, 100);
+
+          window.removeEventListener('message', postMess);
+        }
+      };
+      window.addEventListener('message', postMess);
+
+      setTimeout(() => {
+        window.removeEventListener('message', postMess);
+      }, 3000);
+   };
+
   // Renders
   const renderTypes = () => {
     return (
@@ -181,7 +254,7 @@ const Gallery = (props) => {
             onClick={() => onSelectType(item.template_type_id)}
           >
             <img
-              src={`./${LAYOUT_TEMPLATE[item.template_code].img}`}
+              src={`${LAYOUT_TEMPLATE[item.template_code].img}`}
               alt={item.template_code}
               width="94px"
               // height="74px"
@@ -263,18 +336,26 @@ const Gallery = (props) => {
           >
             Change Template
           </Button>
+          <Button
+            type="default"
+            onClick={onClickPreviewTemplate}
+            className="btn-change-template"
+          >
+            Preview
+          </Button>
         </div>
       </SavedBlock>
     );
   };
 
   return (
-    <>
+    <div id="tesststs">
+      <Button onClick={() => setIsModalVisible(!isModalVisible)}>Show</Button>
       <Modal
         title="Select template"
         visible={isModalVisible}
-        onOk={props.handleOk}
-        onCancel={props.handleCancel}
+        onOk={handleOk}
+        onCancel={handleCancel}
         width="70vw"
       >
         <Tabs
@@ -304,7 +385,7 @@ const Gallery = (props) => {
           onApplyTemplate={onApplyTemplate}
         />
       </Modal>
-    </>
+    </div>
   );
 };
 
