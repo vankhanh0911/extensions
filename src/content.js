@@ -10,38 +10,59 @@ function Main() {
   // const [isShow, setIsShow] = useState(false);
   const [selector, setSelector] = useState("");
 
+  const events = [
+    "click",
+    "mousemove",
+    "mouseleave",
+    // "submit",
+    "mouseup",
+    "hover",
+    "mouseover",
+    "mouseenter",
+    // "change",
+    "focus",
+    "focusout",
+    "focusin",
+    // "keydown",
+    // "keypress",
+    // "keyup",
+    "scroll",
+    "blur",
+    "resize",
+    "mouseout",
+  ];
+
+  const addEvent = (el, type, handler) => {
+    if (el.attachEvent) el.attachEvent("on" + type, handler);
+    else el.addEventListener(type, handler);
+  };
+  const removeEvent = (el, type, handler) => {
+    if (el.detachEvent) el.detachEvent("on" + type, handler);
+    else el.removeEventListener(type, handler, true);
+  };
+
+  let nodes = document.getElementById("root").getElementsByTagName("div");
+
+  const handleEvent = (event) => {
+    event.stopPropagation();
+    event.preventDefault();
+  };
+
+  const removeTrigger = () => {
+    nodes = document.getElementById("root").getElementsByTagName("div");
+
+    for (let i = 0; i < nodes.length; i++) {
+      events.forEach((item) => {
+        removeEvent(nodes[i], item, handleEvent);
+      });
+    }
+  };
+
   useEffect(() => {
-    const events = [
-      "click",
-      "mousemove",
-      "mouseleave",
-      "submit",
-      "mouseup",
-      "hover",
-      "mouseover",
-      "mouseenter",
-      "change",
-      "focus",
-      "focusout",
-      "focusin",
-      "keydown",
-      "keypress",
-      "keyup",
-      "scroll",
-      "blur",
-      "resize",
-      "mouseout",
-    ];
-
-    const nodes = document.getElementById("root").getElementsByTagName("div");
-
     setTimeout(() => {
       for (let i = 0; i < nodes.length; i++) {
         events.forEach((item) => {
-          nodes[i].addEventListener(item, (event) => {
-            event.stopPropagation();
-            event.preventDefault();
-          });
+          addEvent(nodes[i], item, handleEvent);
         });
 
         nodes[i].addEventListener("mouseenter", (event) => {
@@ -216,7 +237,7 @@ function Main() {
 
   return (
     <>
-      <Gallery selector={selector} />
+      <Gallery selector={selector} removeTrigger={removeTrigger} />
     </>
   );
 }

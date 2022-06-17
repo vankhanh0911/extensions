@@ -171,10 +171,16 @@ const Gallery = (props) => {
   const onPreview = (
     d,
     templateId,
+    zoneSelector,
+    zoneRenderType = 'replace',
     isGallery = false,
     isPreview = false,
     env = "production"
   ) => {
+    if (props.removeTrigger && typeof props.removeTrigger === 'function') { 
+      props.removeTrigger();
+    }
+    setIsModalVisible(false);
     const s = d.createElement("script");
     s.type = "text/javascript";
     s.id = "antsomi-cdp-optin";
@@ -187,6 +193,8 @@ const Gallery = (props) => {
     s.dataset.env = env;
     s.dataset.isPreview = isPreview;
     s.dataset.isGallery = isGallery;
+    zoneRenderType && (s.dataset.zoneRenderType = zoneRenderType);
+    s.dataset.zoneSelector = zoneSelector;
     d.getElementsByTagName("head")[0].appendChild(s);
   };
 
@@ -209,6 +217,10 @@ const Gallery = (props) => {
   };
 
   const onClickPreviewTemplate = () => {
+    if (props.removeTrigger && typeof props.removeTrigger === 'function') { 
+      props.removeTrigger();
+    }
+
     setIsModalVisible(false);
     previewCampaign(
         '',
@@ -220,7 +232,7 @@ const Gallery = (props) => {
     );
     
     const postMess = e => {
-        if (e?.data?.type === 'preview-antsomi-cdp-campaign-wating') {
+        if (e?.data?.type === 'preview-antsomi-cdp-campaign-waiting') {
           setTimeout(() => {
             window.postMessage(
               {
@@ -299,6 +311,8 @@ const Gallery = (props) => {
                       onPreview(
                         document,
                         template.template_id,
+                        props.selector || '',
+                        'replace',
                         activeTab === GALLERY,
                         true
                       )
